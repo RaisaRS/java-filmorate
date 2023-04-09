@@ -19,10 +19,4 @@ public class Film {
         this.releaseDate = releaseDate;
         this.duration = duration;
     }
-
-    public String descriptionLength(String description) {
-        StringBuilder filmDescription = new StringBuilder(description);
-        filmDescription.setLength(199);
-        return new String(filmDescription);
-    }
 }
