@@ -29,7 +29,7 @@ public class FilmControllerTest extends FilmorateApplicationTests {
     }
 
     @BeforeAll
-    public static void init() {
+    static void init() {
         filmController = new FilmController();
     }
 
