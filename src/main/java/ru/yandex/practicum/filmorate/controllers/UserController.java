@@ -26,29 +26,28 @@ public class UserController {
     @PostMapping  //валидация должна быть по ТЗ //СОЗДАНИЕ пользователя
     public User addUser(@NonNull @Email @NotBlank @Valid @RequestBody User user) throws ValidationException {
        log.info("POST request received: {}", user);
-       if(userEmails.contains(user.getEmail())) {
+       if (userEmails.contains(user.getEmail())) {
            log.error("Пользователь с таким адресом электронной почты уже существует.");
            throw new ValidationException("Пользователь с таким адресом электронной почты {} уже существует.");
        } //тут надо добавить проверку на @  и проверка на пустоту //проверяется аннотациями @Email, @NotBlank, @NotNull
-
-         if(!user.getEmail().contains("@")||user.getEmail() == null || user.getEmail().isEmpty()
+        if (!user.getEmail().contains("@")||user.getEmail() == null || user.getEmail().isEmpty()
                || user.getEmail().isBlank()) {
            log.error("Электронная почта пользователя {} пуста или Отсутствует символ @. ", user.getEmail());
            throw new ValidationException("Электронная почта введена некорректно: отсутствует символ @, либо незаполнена. "
                    + user.getEmail());
 
        } // тут надо проверить логин на пустоту  содержание пробелов - методы поодстроки
-       if(user.getLogin() == null || user.getLogin().contains(" ")) {
+       if (user.getLogin() == null || user.getLogin().contains(" ")) {
            log.error("Логин {} отсутствует или содержит пробелы. ", user.getLogin());
            throw new ValidationException("Логин отсутствует или содержит пробелы. " + user.getLogin());
 
        } //установка логина вместо имени пользователя
-       if(user.getName() == null || user.getName().isEmpty() || user.getName().isBlank()) {
+       if (user.getName() == null || user.getName().isEmpty() || user.getName().isBlank()) {
            log.error("Имя пользователя пустое. Установлен логин {} в качестве имени.", user.getLogin());
            user.setName(user.getLogin());
 
        } //тут надо проверить дату рождения
-       if(user.getBirthday().isAfter(LocalDate.now())) {
+       if (user.getBirthday().isAfter(LocalDate.now())) {
            log.error("Введена некорректная дата рождения {}.", user.getBirthday());
            throw new ValidationException("Введена некорректная дата рождения." + user.getBirthday());
        }
@@ -64,19 +63,19 @@ public class UserController {
     public User putUser(@NonNull @Email @NotBlank @Valid @RequestBody User user) throws ValidationException {
 
         log.info("PUT request received: {}", user);
-        if(!users.containsKey(user.getId())) {
+        if (!users.containsKey(user.getId())) {
             log.error("Пользователь с таким идентификатором {} не существует", user.getId());
             throw new ValidationException("Пользователь с таким идентификатором не существует " + user.getId());
         }
-        if(user.getLogin() == null || user.getLogin().contains(" ")) {
+        if (user.getLogin() == null || user.getLogin().contains(" ")) {
             log.error("Логин {} отсутствует или содержит пробелы. ", user.getLogin());
             user.setLogin(user.getLogin());
         }
-        if(user.getName() == null || user.getName().isEmpty() || user.getName().isBlank()) {
+        if (user.getName() == null || user.getName().isEmpty() || user.getName().isBlank()) {
             log.error("Имя пользователя пустое. Установите логин {} в качестве имени.", user.getLogin());
             user.setName(user.getLogin());
         }
-        if(!user.getBirthday().isAfter(ChronoLocalDate.from(Instant.now()))) {
+        if (!user.getBirthday().isAfter(ChronoLocalDate.from(Instant.now()))) {
             log.error("Введена некорректная дата рождения {}.", user.getBirthday());
             user.setBirthday(user.getBirthday());
         }

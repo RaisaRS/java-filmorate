@@ -23,26 +23,26 @@ public class FilmController {
     @PostMapping  //валидация должна быть по ТЗ //ДОБАВЛЕНИЕ нового фильма
     public Film addFilm(@NonNull @NotBlank @Valid @RequestBody Film film) throws ValidationException {
         log.info("POST request received: {}",film);
-        if(nameFilms.contains(film.getName())) {
+        if (nameFilms.contains(film.getName())) {
             log.error("Фильм с таким названием уже существует.");
             throw new ValidationException("Фильм с таким названием {} уже существует.");
         } //тут надодобавить проверку на пусое название фильма //проверяется аннотациями  @NotBlank, @NotNull
-        if(film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
+        if (film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
             log.error("Название фильма {} отсутствует. ", film.getName());
             throw new ValidationException("Название фильма отсутствует. " + film.getName());
         } // тут надо проверить описание на макс длину 200 символов
-        if(film.getDescription().length() > 200) {
+        if (film.getDescription().length() > 200) {
             log.error("Описание фильма {} превышает заданную длину в 200 символов. ", film.getDescription());
             //film.descriptionLength(film.getDescription());
             throw new ValidationException("Описание фильма превышает заданную длину в 200 символов. ");
         }
         //проверка на дату релиза не ранее 28.12.1895г.
-        if(film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
+        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             log.error("Дата релиза ранее установленной даты  {} 28.12.1895г.", film.getReleaseDate());
             throw new ValidationException("Дата релиза ранее установленной даты 28.12.1895г." + film.getReleaseDate());
         }
         //продолжительность фильма должна быть положительной
-        if(film.getDuration() < 0) {
+        if (film.getDuration() < 0) {
             log.error("Неверно указана продолжительность фильма {}. Введено отрицательное значение. ", film.getDuration());
             throw new ValidationException("Неверно указана продолжительность фильма. Введено отрицательное значение. "
                     + film.getDuration());
@@ -59,26 +59,26 @@ public class FilmController {
     public Film putFilm(@NonNull  @NotBlank @Valid @RequestBody Film film) throws ValidationException {
 
         log.info("PUT request received: {}", film);
-        if(!films.containsKey(film.getId())) {
+        if (!films.containsKey(film.getId())) {
             log.error("Фильм с таким идентификатором {} не существует", film.getId());
             throw new ValidationException("Фильм с таким идентификатором не существует " + film.getId());
         }
-        if(film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
+        if (film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
             log.error("Название фильма {} отсутствует. ", film.getName());
             throw new ValidationException("Название фильма отсутствует. " + film.getName());
         } // тут надо проверить описание на макс длину 200 символов
-        if(film.getDescription().length() > 200) {
+        if (film.getDescription().length() > 200) {
             log.error("Описание фильма {} превышает заданную длину в 200 символов. ", film.getDescription());
             //film.descriptionLength(film.getDescription());
             throw new ValidationException("Описание фильма превышает заданную длину в 200 символов. ");
         }
         //проверка на дату релиза не ранее 28.12.1895г.
-        if(film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
+        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             log.error("Дата релиза ранее установленной даты  {} 28.12.1895г.", film.getReleaseDate());
             throw new ValidationException("Дата релиза ранее установленной даты 28.12.1895г." + film.getReleaseDate());
         }
         //продолжительность фильма должна быть положительной
-        if(film.getDuration() <= 0) {
+        if (film.getDuration() <= 0) {
             log.error("Неверно указана продолжительность фильма {}. Введено отрицательное значение. ", film.getDuration());
             throw new ValidationException("Неверно указана продолжительность фильма. Введено отрицательное значение. "
                     + film.getDuration());
