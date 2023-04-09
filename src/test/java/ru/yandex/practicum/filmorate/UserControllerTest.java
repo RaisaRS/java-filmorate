@@ -18,18 +18,18 @@ public class UserControllerTest extends FilmorateApplicationTests {
     private static User user1;
 
     @BeforeAll
-    static void BeforeAll() {
+    public static void BeforeAll() {
          userController = new UserController();
     }
 
     @BeforeEach
-      void BeforeEach() {
+    void initEach() {
          user = new User(1, "popular@mail.ru", "login", "name",
                 LocalDate.of(1984, 3, 22));
     }
 
     @AfterEach
-    void AfterEach() {
+    void finishedTest() {
         userController.getUsers().clear();
         userController.getUserEmails().clear();
     }

@@ -17,19 +17,19 @@ public class FilmControllerTest extends FilmorateApplicationTests {
      private static Film film;
 
     @BeforeEach
-    void BeforeEach() {
+    void initEach() {
         film = new Film(1, "name", "description", LocalDate.of(2005, 1, 17),
                 125);
     }
 
     @AfterEach
-    void AfterEach() {
+    void finishedTest() {
         filmController.getNameFilms().clear();
         filmController.getFilms().clear();
     }
 
     @BeforeAll
-    static void BeforeAll() {
+    public static void init() {
         filmController = new FilmController();
     }
 
