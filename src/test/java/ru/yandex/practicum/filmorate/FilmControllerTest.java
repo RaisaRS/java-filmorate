@@ -41,6 +41,16 @@ public class FilmControllerTest extends FilmorateApplicationTests {
     }
 
     @Test
+    public void inCorrectIdTest() {
+        filmController.addFilm(film);
+        film.setId(5);
+        Exception exception =  assertThrows(ValidationException.class, () -> filmController.putFilm(film));
+        String expectedMessage = "Фильм с таким идентификатором не существует " + film.getId();
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
     public void shouldNameIsEmpty() {
         filmController.addFilm(film);
         film.setName("");
