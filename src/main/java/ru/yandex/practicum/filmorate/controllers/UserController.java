@@ -30,7 +30,7 @@ public class UserController {
            log.error("Пользователь с таким адресом электронной почты уже существует.");
            throw new ValidationException("Пользователь с таким адресом электронной почты {} уже существует.");
        } //тут надо добавить проверку на @  и проверка на пустоту //проверяется аннотациями @Email, @NotBlank, @NotNull
-        if (!user.getEmail().contains("@")||user.getEmail() == null || user.getEmail().isEmpty()
+        if (!user.getEmail().contains("@") || user.getEmail() == null || user.getEmail().isEmpty()
                || user.getEmail().isBlank()) {
            log.error("Электронная почта пользователя {} пуста или Отсутствует символ @. ", user.getEmail());
            throw new ValidationException("Электронная почта введена некорректно: отсутствует символ @, либо незаполнена. "
