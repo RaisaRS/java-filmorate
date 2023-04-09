@@ -53,7 +53,7 @@ public class UserControllerTest extends FilmorateApplicationTests {
     }
 
     @Test
-    public void shouldLoginNotWhitespace(){
+    public void shouldLoginNotWhitespace() {
         user.setLogin(" log in");
         Exception exception =  assertThrows(ValidationException.class, () -> userController.addUser(user));
         String expectedMessage = "Логин отсутствует или содержит пробелы. " + user.getLogin();
