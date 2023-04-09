@@ -20,14 +20,19 @@ public class FilmController {
     private final Set<String> nameFilms = new HashSet<>();
     private int id =  0;
 
+    public Set<String> getNameFilms() {
+        return nameFilms;
+    }
+
+
     @PostMapping  //валидация должна быть по ТЗ //ДОБАВЛЕНИЕ нового фильма
-    public Film addFilm(@NonNull @NotBlank @Valid @RequestBody Film film) throws ValidationException {
+    public Film addFilm(@Valid @RequestBody Film film) throws ValidationException {
         log.info("POST request received: {}",film);
         if (nameFilms.contains(film.getName())) {
-            log.error("Фильм с таким названием уже существует.");
-            throw new ValidationException("Фильм с таким названием {} уже существует.");
+            log.error("Фильм с таким названием {} уже существует.");
+            throw new ValidationException("Фильм с таким названием уже существует." + film.getName());
         } //тут надодобавить проверку на пусое название фильма //проверяется аннотациями  @NotBlank, @NotNull
-        if (film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
+        else if (film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
             log.error("Название фильма {} отсутствует. ", film.getName());
             throw new ValidationException("Название фильма отсутствует. " + film.getName());
         } // тут надо проверить описание на макс длину 200 символов

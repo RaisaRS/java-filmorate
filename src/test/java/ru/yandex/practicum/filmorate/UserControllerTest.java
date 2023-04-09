@@ -1,5 +1,8 @@
 package ru.yandex.practicum.filmorate;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -10,10 +13,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserControllerTest extends FilmorateApplicationTests {
 
-    private static final UserController userController = new UserController();
+     static  UserController userController;
+    private static User user;
+    private static User user1;
 
-        User user = new User(1, "popular@mail.ru", "login", "name",
+    @BeforeAll
+    static void BeforeAll() {
+         userController = new UserController();
+    }
+
+    @BeforeEach
+      void BeforeEach() {
+         user = new User(1, "popular@mail.ru", "login", "name",
                 LocalDate.of(1984, 3, 22));
+    }
+
+    @AfterEach
+    void AfterEach() {
+        userController.getUsers().clear();
+        userController.getUserEmails().clear();
+    }
 
     @Test
     public void shouldAddUserTest() {
@@ -26,7 +45,7 @@ public class UserControllerTest extends FilmorateApplicationTests {
     public void shouldEmailContainsSymbol() {
         user.setEmail("parapapam.pam");
         Exception exception =  assertThrows(ValidationException.class, () -> userController.addUser(user));
-        String expectedMessage = "Электронная почта пользователя отсутствует пуста или Отсутствует символ @. "
+        String expectedMessage = "Электронная почта введена некорректно: отсутствует символ @, либо незаполнена. "
                 + user.getEmail();
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
@@ -56,7 +75,7 @@ public class UserControllerTest extends FilmorateApplicationTests {
     public void shouldLoginNotWhitespace() {
         user.setLogin(" log in");
         Exception exception =  assertThrows(ValidationException.class, () -> userController.addUser(user));
-        String expectedMessage = "Логин отсутствует или содержит пробелы. " + user.getLogin();
+        String expectedMessage = "Логин отсутствует или содержит пробелы. ";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
@@ -78,7 +97,7 @@ public class UserControllerTest extends FilmorateApplicationTests {
 
     @Test
     public void shouldUpdateTest() {
-        user.setId(0);
+        user.setId(99);
         user.setBirthday(LocalDate.of(2025,12,8));
         user.setEmail("email.email");
         user.setName(null);
@@ -91,7 +110,7 @@ public class UserControllerTest extends FilmorateApplicationTests {
 
     @Test
     public void shouldGetListUsers() {
-        User user1 = new User(2, "popular1@mail.ru", "login1", "name1",
+         user1 = new User(2, "popular1@mail.ru", "login1", "name1",
                 LocalDate.of(1994, 5, 22));
         userController.addUser(user);
         userController.addUser(user1);

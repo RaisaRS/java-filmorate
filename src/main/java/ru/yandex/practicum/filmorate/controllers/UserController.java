@@ -23,22 +23,26 @@ public class UserController {
     private final Set<String> userEmails = new HashSet<>();
     private int id =  0;
 
+    public Set<String> getUserEmails() {
+        return userEmails;
+    }
+
     @PostMapping  //валидация должна быть по ТЗ //СОЗДАНИЕ пользователя
-    public User addUser(@NonNull @Email @NotBlank @Valid @RequestBody User user) throws ValidationException {
+    public User addUser(@Valid @RequestBody User user) throws ValidationException {
        log.info("POST request received: {}", user);
        if (userEmails.contains(user.getEmail())) {
            log.error("Пользователь с таким адресом электронной почты уже существует.");
-           throw new ValidationException("Пользователь с таким адресом электронной почты {} уже существует.");
+           throw new ValidationException("Пользователь с таким адресом электронной почты уже существует.");
        } //тут надо добавить проверку на @  и проверка на пустоту //проверяется аннотациями @Email, @NotBlank, @NotNull
         if (!user.getEmail().contains("@") || user.getEmail() == null || user.getEmail().isEmpty()
                || user.getEmail().isBlank()) {
-           log.error("Электронная почта пользователя {} пуста или Отсутствует символ @. ", user.getEmail());
+           log.error("Электронная почта {} введена некорректно: отсутствует символ @, либо незаполнена. ", user.getEmail());
            throw new ValidationException("Электронная почта введена некорректно: отсутствует символ @, либо незаполнена. "
                    + user.getEmail());
        } // тут надо проверить логин на пустоту  содержание пробелов - методы поодстроки
        if (user.getLogin() == null || user.getLogin().contains(" ")) {
            log.error("Логин {} отсутствует или содержит пробелы. ", user.getLogin());
-           throw new ValidationException("Логин отсутствует или содержит пробелы. " + user.getLogin());
+           throw new ValidationException("Логин отсутствует или содержит пробелы. ");
        } //установка логина вместо имени пользователя
        if (user.getName() == null || user.getName().isEmpty() || user.getName().isBlank()) {
            log.error("Имя пользователя пустое. Установлен логин {} в качестве имени.", user.getLogin());
@@ -57,7 +61,7 @@ public class UserController {
     }
 
     @PutMapping //ОБНОВЛЕНИЕ пользователя
-    public User putUser(@NonNull @Email @NotBlank @Valid @RequestBody User user) throws ValidationException {
+    public User putUser(@Valid @RequestBody User user) throws ValidationException {
 
         log.info("PUT request received: {}", user);
         if (!users.containsKey(user.getId())) {

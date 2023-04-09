@@ -1,5 +1,8 @@
 package ru.yandex.practicum.filmorate;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -10,9 +13,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FilmControllerTest extends FilmorateApplicationTests {
 
-    private static final FilmController filmController = new FilmController();
-    Film film = new Film(1, "name", "description", LocalDate.of(2005,1,17),
-            125);
+     static  FilmController filmController;
+     private static Film film;
+
+    @BeforeEach
+    void BeforeEach() {
+        film = new Film(1, "name", "description", LocalDate.of(2005, 1, 17),
+                125);
+    }
+
+    @AfterEach
+    void AfterEach() {
+        filmController.getNameFilms().clear();
+        filmController.getFilms().clear();
+    }
+
+    @BeforeAll
+    static void BeforeAll() {
+        filmController = new FilmController();
+    }
 
     @Test
     public void shouldAddFilmTest() {
@@ -84,6 +103,7 @@ public class FilmControllerTest extends FilmorateApplicationTests {
 
     @Test
     public void shouldUpdateTestTwo() {
+        filmController.addFilm(film);
         film.setReleaseDate(LocalDate.of(1888,12,8));
         Exception exception = assertThrows(ValidationException.class, () -> filmController.putFilm(film));
         String expectedMessage = "Дата релиза ранее установленной даты 28.12.1895г." + film.getReleaseDate();
