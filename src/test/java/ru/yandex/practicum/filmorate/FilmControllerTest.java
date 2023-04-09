@@ -8,14 +8,14 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FilmControllerTest extends FilmorateApplicationTests{
+public class FilmControllerTest extends FilmorateApplicationTests {
 
     private static final FilmController filmController = new FilmController();
     Film film = new Film(1, "name", "description", LocalDate.of(2005,1,17),
             125);
-            //int id, String name, String description, LocalDate releaseDate, int duration
+
     @Test
-    public void shouldAddFilmTest(){
+    public void shouldAddFilmTest() {
         assertEquals(film, filmController.addFilm(film));
         filmController.filmsList();
         assertNotNull(filmController.getFilms());
@@ -55,15 +55,16 @@ public class FilmControllerTest extends FilmorateApplicationTests{
     }
 
     @Test
-    public void shouldBirthdayNotFuture(){
+    public void shouldBirthdayNotFuture() {
         film.setReleaseDate(LocalDate.of(1888,1,17));
         Exception exception =  assertThrows(ValidationException.class, () -> filmController.addFilm(film));
         String expectedMessage = "Дата релиза ранее установленной даты 28.12.1895г." + film.getReleaseDate();
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
+
     @Test
-    public void shouldDurationIsPositive(){
+    public void shouldDurationIsPositive() {
         film.setDuration(-1);
         Exception exception =  assertThrows(ValidationException.class, () -> filmController.addFilm(film));
         String expectedMessage = "Неверно указана продолжительность фильма. Введено отрицательное значение. "
@@ -80,6 +81,7 @@ public class FilmControllerTest extends FilmorateApplicationTests{
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
+
     @Test
     public void shouldUpdateTestTwo() {
         film.setReleaseDate(LocalDate.of(1888,12,8));
@@ -124,7 +126,7 @@ public class FilmControllerTest extends FilmorateApplicationTests{
     }
 
     @Test
-    public void shouldGetListFilms(){
+    public void shouldGetListFilms() {
         Film film1 = new Film(2, "name1", "description1", LocalDate.of(2005,1,17),
                 125);
         filmController.addFilm(film);
@@ -132,5 +134,4 @@ public class FilmControllerTest extends FilmorateApplicationTests{
         assertFalse(filmController.filmsList().isEmpty());
         assertEquals(2, filmController.filmsList().size());
     }
-
 }

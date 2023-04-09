@@ -16,7 +16,7 @@ public class UserControllerTest extends FilmorateApplicationTests {
                 LocalDate.of(1984, 3, 22));
 
     @Test
-    public void shouldAddUserTest(){
+    public void shouldAddUserTest() {
         assertEquals(user, userController.addUser(user));
         userController.usersList();
         assertNotNull(userController.getUsers());
@@ -68,7 +68,7 @@ public class UserControllerTest extends FilmorateApplicationTests {
     }
 
     @Test
-    public void shouldBirthdayNotFuture(){
+    public void shouldBirthdayNotFuture() {
         user.setBirthday(LocalDate.of(2025,1,17));
         Exception exception =  assertThrows(ValidationException.class, () -> userController.addUser(user));
         String expectedMessage = "Введена некорректная дата рождения." + user.getBirthday();
@@ -90,7 +90,7 @@ public class UserControllerTest extends FilmorateApplicationTests {
     }
 
     @Test
-    public void shouldGetListUsers(){
+    public void shouldGetListUsers() {
         User user1 = new User(2, "popular1@mail.ru", "login1", "name1",
                 LocalDate.of(1994, 5, 22));
         userController.addUser(user);
