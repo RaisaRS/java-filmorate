@@ -35,17 +35,14 @@ public class UserController {
            log.error("Электронная почта пользователя {} пуста или Отсутствует символ @. ", user.getEmail());
            throw new ValidationException("Электронная почта введена некорректно: отсутствует символ @, либо незаполнена. "
                    + user.getEmail());
-
        } // тут надо проверить логин на пустоту  содержание пробелов - методы поодстроки
        if (user.getLogin() == null || user.getLogin().contains(" ")) {
            log.error("Логин {} отсутствует или содержит пробелы. ", user.getLogin());
            throw new ValidationException("Логин отсутствует или содержит пробелы. " + user.getLogin());
-
        } //установка логина вместо имени пользователя
        if (user.getName() == null || user.getName().isEmpty() || user.getName().isBlank()) {
            log.error("Имя пользователя пустое. Установлен логин {} в качестве имени.", user.getLogin());
            user.setName(user.getLogin());
-
        } //тут надо проверить дату рождения
        if (user.getBirthday().isAfter(LocalDate.now())) {
            log.error("Введена некорректная дата рождения {}.", user.getBirthday());
