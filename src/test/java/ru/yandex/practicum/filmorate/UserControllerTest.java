@@ -18,7 +18,7 @@ public class UserControllerTest extends FilmorateApplicationTests {
     private static User user1;
 
     @BeforeAll
-    static void BeforeAll() {
+    static void init() {
          userController = new UserController();
     }
 
