@@ -1,22 +1,28 @@
-package model;
+package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public class Film {
     private int id;
     private String name;
     private String description;
-    private LocalDateTime releaseDate;
+    private LocalDate releaseDate;
     private int duration;
 
-    public Film(int id, String name, String description, LocalDateTime releaseDate, int duration) {
+    public Film(int id, String name, String description, LocalDate releaseDate, int duration) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
+    }
+
+    public String descriptionLength(String description) {
+        StringBuilder filmDescription = new StringBuilder(description);
+        filmDescription.setLength(199);
+        return new String(filmDescription);
     }
 }
