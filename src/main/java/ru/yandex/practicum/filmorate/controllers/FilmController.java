@@ -1,13 +1,11 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -23,7 +21,6 @@ public class FilmController {
     public Set<String> getNameFilms() {
         return nameFilms;
     }
-
 
     @PostMapping  //валидация должна быть по ТЗ //ДОБАВЛЕНИЕ нового фильма
     public Film addFilm(@Valid @RequestBody Film film) throws ValidationException {
