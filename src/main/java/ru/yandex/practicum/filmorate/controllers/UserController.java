@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping  //валидация должна быть по ТЗ //СОЗДАНИЕ пользователя
-    public User addUser(@Valid @RequestBody User user) throws ValidationException {
+    public User addUser(@RequestBody User user) throws ValidationException {
         log.info("POST request received: {}", user);
         if (userEmails.contains(user.getEmail())) {
             log.error("Пользователь с таким адресом электронной почты уже существует.");
@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @PutMapping //ОБНОВЛЕНИЕ пользователя
-    public User putUser(@Valid @RequestBody User user) throws ValidationException {
+    public User putUser(@RequestBody User user) throws ValidationException {
 
         log.info("PUT request received: {}", user);
         if (!users.containsKey(user.getId())) {
@@ -73,7 +73,7 @@ public class UserController {
             log.error("Имя пользователя пустое. Установите логин {} в качестве имени.", user.getLogin());
             user.setName(user.getLogin());
         }
-        if (!user.getBirthday().isAfter(ChronoLocalDate.from(Instant.now()))) {
+        if (!user.getBirthday().isAfter(LocalDate.now())) {
             log.error("Введена некорректная дата рождения {}.", user.getBirthday());
             user.setBirthday(user.getBirthday());
         }

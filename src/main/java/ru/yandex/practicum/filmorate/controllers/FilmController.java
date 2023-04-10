@@ -60,7 +60,7 @@ public class FilmController {
     }
 
     @PutMapping //ОБНОВЛЕНИЕ фильма
-    public Film putFilm(@NonNull  @NotBlank @Valid @RequestBody Film film) throws ValidationException {
+    public Film putFilm(@Valid @RequestBody Film film) throws ValidationException {
 
         log.info("PUT request received: {}", film);
         if (!films.containsKey(film.getId())) {

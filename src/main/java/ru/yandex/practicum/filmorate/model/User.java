@@ -14,11 +14,9 @@ public class User {
     @NotNull(message = "email не может отсутствовать")
     @NotBlank(message = "email не может быть пустым")
     @Email(message = "email должен содержать символ - @")
-
     private String email;
     @NotNull(message = "Логин не может быть пустым или содержать пробелы.")
     @NotBlank(message = "Логин не может быть пустым или содержать пробелы.")
-
     private String login;
     private String name;
     @Past(message = "Дата рождения не может быть в будущем.")
