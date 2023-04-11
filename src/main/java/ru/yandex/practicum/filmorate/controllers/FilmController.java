@@ -16,7 +16,7 @@ public class FilmController {
 
     private final Map<Integer, Film> films = new HashMap<>();
     private final Set<String> nameFilms = new HashSet<>();
-    private int id =  0;
+    private int id = 0;
 
     public Set<String> getNameFilms() {
         return nameFilms;
@@ -24,7 +24,7 @@ public class FilmController {
 
     @PostMapping  //валидация должна быть по ТЗ //ДОБАВЛЕНИЕ нового фильма
     public Film addFilm(@Valid @RequestBody Film film) throws ValidationException {
-        log.info("POST request received: {}",film);
+        log.info("POST request received: {}", film);
         if (nameFilms.contains(film.getName())) {
             log.error("Фильм с таким названием уже существует.");
             throw new ValidationException("Фильм с таким названием уже существует." + film.getName());
@@ -63,9 +63,9 @@ public class FilmController {
             log.error("Фильм с таким идентификатором {} не существует", film.getId());
             throw new ValidationException("Фильм с таким идентификатором не существует " + film.getId());
         }
-        if (nameFilms.contains(film.getName())) {
-            log.error("Фильм с таким названием уже существует.");
-            throw new ValidationException("Фильм с таким названием уже существует." + film.getName());
+        if (!nameFilms.contains(film.getName())) {
+            log.error("Фильм с таким названием не существует.");
+            throw new ValidationException("Фильм с таким названием не существует." + film.getName());
         }
         if (film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
             log.error("Название фильма {} отсутствует. ", film.getName());
@@ -92,7 +92,7 @@ public class FilmController {
         return film;
     }
 
-   public Map<Integer, Film> getFilms() {
+    public Map<Integer, Film> getFilms() {
         return films;
     }
 
