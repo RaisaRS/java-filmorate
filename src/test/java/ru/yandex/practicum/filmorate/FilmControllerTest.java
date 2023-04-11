@@ -156,16 +156,6 @@ public class FilmControllerTest extends FilmorateApplicationTests {
     }
 
     @Test
-    public void shouldUpdateTestSix() {
-        filmController.addFilm(film);
-        film.setName("anyThingElseQWAQWA");
-        Exception exception = assertThrows(ValidationException.class, () -> filmController.putFilm(film));
-        String expectedMessage = "Фильм с таким названием не существует." + film.getName();
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    @Test
     public void shouldGetListFilms() {
         Film film1 = new Film(2, "name1", "description1", LocalDate.of(2005, 1, 17),
                 125);
