@@ -7,7 +7,9 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/films")
@@ -15,20 +17,13 @@ import java.util.*;
 public class FilmController {
 
     private final Map<Integer, Film> films = new HashMap<>();
-    private final Set<String> nameFilms = new HashSet<>();
     private int id = 0;
 
-    public Set<String> getNameFilms() {
-        return nameFilms;
-    }
 
     @PostMapping  //валидация должна быть по ТЗ //ДОБАВЛЕНИЕ нового фильма
     public Film addFilm(@Valid @RequestBody Film film) throws ValidationException {
         log.info("POST request received: {}", film);
-        if (nameFilms.contains(film.getName())) {
-            log.error("Фильм с таким названием уже существует.");
-            throw new ValidationException("Фильм с таким названием уже существует." + film.getName());
-        } else if (film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
+        if (film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
             log.error("Название фильма {} отсутствует. ", film.getName());
             throw new ValidationException("Название фильма отсутствует. " + film.getName());
         } // тут надо проверить описание на макс длину 200 символов
@@ -51,7 +46,6 @@ public class FilmController {
         id++;
         film.setId(id);
         films.put(film.getId(), film);
-        nameFilms.add(film.getName());
         log.info("Фильм добавлен: {}", film);
         return film;
     }
@@ -62,12 +56,7 @@ public class FilmController {
         if (!films.containsKey(film.getId())) {
             log.error("Фильм с таким идентификатором {} не существует", film.getId());
             throw new ValidationException("Фильм с таким идентификатором не существует " + film.getId());
-        }
-        if (!nameFilms.contains(film.getName())) {
-            log.error("Фильм с таким названием не существует.");
-            throw new ValidationException("Фильм с таким названием не существует." + film.getName());
-        }
-        if (film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
+        } else if (film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
             log.error("Название фильма {} отсутствует. ", film.getName());
             throw new ValidationException("Название фильма отсутствует. " + film.getName());
         } // тут надо проверить описание на макс длину 200 символов
