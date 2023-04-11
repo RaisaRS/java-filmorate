@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FilmControllerTest extends FilmorateApplicationTests {
 
-     static  FilmController filmController;
+     private static  FilmController filmController;
      private static Film film;
 
     @BeforeEach

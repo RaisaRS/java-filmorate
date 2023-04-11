@@ -58,11 +58,14 @@ public class FilmController {
 
     @PutMapping //ОБНОВЛЕНИЕ фильма
     public Film putFilm(@Valid @RequestBody Film film) throws ValidationException {
-
         log.info("PUT request received: {}", film);
         if (!films.containsKey(film.getId())) {
             log.error("Фильм с таким идентификатором {} не существует", film.getId());
             throw new ValidationException("Фильм с таким идентификатором не существует " + film.getId());
+        }
+        if (nameFilms.contains(film.getName())) {
+            log.error("Фильм с таким названием уже существует.");
+            throw new ValidationException("Фильм с таким названием уже существует." + film.getName());
         }
         if (film.getName() == null || film.getName().isEmpty() || film.getName().isBlank()) {
             log.error("Название фильма {} отсутствует. ", film.getName());
@@ -89,7 +92,7 @@ public class FilmController {
         return film;
     }
 
-    public Map<Integer, Film> getFilms() {
+   public Map<Integer, Film> getFilms() {
         return films;
     }
 
