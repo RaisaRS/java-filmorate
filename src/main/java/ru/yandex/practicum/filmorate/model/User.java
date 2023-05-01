@@ -1,28 +1,40 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+@Builder
 @Data
+@AllArgsConstructor
 public class User {
-    private  int id;
-    //@NotNull(message = "email не может отсутствовать")
-    //@NotBlank(message = "email не может быть пустым")
-    //@Email(message = "email должен содержать символ - @")
+
+    private Long id;
+
+    @NotBlank
+    @Email
     private String email;
-    //@NotNull(message = "Логин не может быть пустым или содержать пробелы.")
-    //@NotBlank(message = "Логин не может быть пустым или содержать пробелы.")
+
+    @NotNull
+    @NotBlank
     private String login;
+
     private String name;
-    //@Past(message = "Дата рождения не может быть в будущем.")
+
+    @Past
     private LocalDate birthday;
 
-    public User(int id, String email, String login, String name, LocalDate birthday) {
-        this.id = id;
-        this.email = email;
-        this.login = login;
-        this.name = name;
-        this.birthday = birthday;
+    private final Set<Long> friends = new HashSet<>();  //айди юзеров, подавших заявки в друзья
+
+    public void addFriend(Long id) {
+        friends.add(id);
     }
 }
