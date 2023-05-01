@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 public class Film {
 
-    private Long id;
+    private long id;
 
     @NotNull
     @NotBlank
@@ -27,5 +27,5 @@ public class Film {
     @Positive
     private int duration;
 
-    private final Set<Long> likes = new HashSet<>(); //айди юзеров, поставивших лайк фильму
+    private final Set<Long> likes = new HashSet<>(); //айди юзеров, поставивших лайк фильму 
 }

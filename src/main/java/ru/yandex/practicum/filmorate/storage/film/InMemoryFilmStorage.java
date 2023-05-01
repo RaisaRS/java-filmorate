@@ -26,7 +26,6 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film addFilm(Film film) {  //добавление фильма
-        //film.setId(film.getId());
         films.put(film.getId(), film);
         return film;
     }
@@ -35,7 +34,6 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Film deleteFilm(Film film) {   //удаление фильма
         checkFilm(film.getId(), "Удалить нельзя, фильм не существует " + film.getId());
         return films.remove(film.getId());
-
     }
 
     @Override

@@ -33,8 +33,8 @@ public class FilmService {
     }
 
     public Film createFilm(Film film) {
-        film.setId(++id);
         validateFim(film);
+        film.setId(++id);
         return filmStorage.addFilm(film);
     }
 

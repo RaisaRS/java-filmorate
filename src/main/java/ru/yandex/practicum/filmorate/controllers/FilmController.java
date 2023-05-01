@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -21,7 +20,6 @@ public class FilmController {
     private final FilmService filmService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public Film addFilm(@Valid @RequestBody Film film) {
         log.info("Получен POST запрос");
         return filmService.createFilm(film);
@@ -40,7 +38,7 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public void addLike(@PathVariable("id") Long filmId, @PathVariable long userId) {
+    public void addLike(@PathVariable("id") long filmId, @PathVariable long userId) {
         log.info("Получен PUT запрос");
         filmService.addLike(filmId, userId);
     }
