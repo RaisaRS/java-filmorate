@@ -14,18 +14,13 @@ import java.util.Set;
 public class Film {
 
     private long id;
-    
     @NotNull
     @NotBlank
     private String name;
-
     @Size(max = 200)
     private String description;
-
     private LocalDate releaseDate;
-
     @Positive
     private int duration;
-
     private final Set<Long> likes = new HashSet<>(); //айди юзеров, поставивших лайк фильму
 }
