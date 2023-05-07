@@ -1,7 +1,8 @@
 # java-filmorate
 
 Template repository for Filmorate project.
-![Диаграмма базы данных проекта Filmorate (src/main/resources/Diagramma_Filmorate.png)]
+
+![Диаграмма базы данных проекта Filmorate ](src/main/resources/Diagramma_Filmorate.png)
 
 **Описание диаграммы базы данных проекта Filmorate:**
 
@@ -122,6 +123,25 @@ NC-17 — лицам до 18 лет просмотр запрещён.
 -подтверждённая (когда второй пользователь согласился на добавление).
 
 ***Примеры запросов для получения данных:***
+
+**Добавить пользователя**
+
+```
+INSERT INTO users (name, login, email, birthday)
+VALUES ( 'Кое-кто', 'login', 'koe_kto@mail.ru', '1984-03-22');
+```
+
+**Удалить пользователя с именем Name**
+
+```
+DELETE FROM users WHERE name = 'Name';
+```
+
+**Обновить имя пользователя**
+
+```
+UPDATE users SET name = 'Name1' WHERE name = 'Name';
+```
 
 **Проверка на подтверждение дружбы:**
 
