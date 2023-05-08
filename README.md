@@ -2,7 +2,7 @@
 
 Template repository for Filmorate project.
 
-![Диаграмма базы данных проекта Filmorate](src/main/resources/diagramm.png)
+![Диаграмма базы данных проекта Filmorate](src/main/resources/er_diagramm.png)
 
 **Описание диаграммы базы данных проекта Filmorate:**
 
@@ -13,7 +13,7 @@ Template repository for Filmorate project.
 ***выбору фильмов.***
 
 Таблица **users** содержит данные о пользователе
-(primary key - user_id, foreign keys - friend_id, like_id).
+(primary key - user_id).
 
 Включает поля:
 
@@ -26,10 +26,6 @@ Template repository for Filmorate project.
 *email* - электронная почта пользователя;
 
 *birthday* - дата рождения пользователя;
-
-*friend_id* - наличие/отсутствие друзей у пользователя;
-
-*like_id* - лайк фиьму
 
 Таблица **films** содержит данные о фильме
 (primary key - film_id, foreign keys - mpa_id).
@@ -46,13 +42,12 @@ Template repository for Filmorate project.
 
 *duration* - продолжительность фильма;
 
-*mpa_id* - внешний ключ, идентификатор жанра, отсылает к таблице mpa.
+*mpa_id* - внешний ключ, идентификатор рейтинга, отсылает к таблице mpa.
 
 Таблица **film_genre** содержит информацию о жанрах фильма
-(primary key - film_genre_id, foreign keys - film_id, genre_id);
+(primary key - film_id, genre_id);
 
 Содержит поля:
-**film_genre_id** - идентификатор, определяющий жанр фильма
 
 *film_id* - идентификатор фильма;
 
@@ -107,22 +102,18 @@ R — лицам до 17 лет просматривать фильм можно
 NC-17 — лицам до 18 лет просмотр запрещён.
 
 Таблица **likes** содержит информацию о понравившихся фильмах пользователям.
-(primary key - like_id, foreign keys - user_id, film_id)
+(primary key - user_id, film_id)
 
 Содержит следующие поля:
-
-*like_id* - идентификатор лайка ;
 
 *film_id* - идентификатор фильма, которому пользователь поставил лайк;
 
 *user_id* - идентификатор пользователя, поставившего лайк фильму.
 
 Таблица **friendship** содержит информацию о дружбе пользователей
-(primary key - friendship_id, foreign keys - user_id, friend_id).
+(primary key - user_id, friend_id).
 
 Включает поля:
-
-*friendship_id* - идентификатор дружбы;
 
 *user_id* - идентификатор пользователя;
 
@@ -177,7 +168,7 @@ FROM films AS f
 INNER JOIN mpa AS m ON m.mpa_id = f.mpa_id
 INNER JOIN film_genre AS fg ON fg.film_id = f.film_id
 INNER JOIN genre AS g ON g.genre_id = fg.genre_id
-WHERE f.realiseDate = EXTRACT(YEAR FROM CAST date) "2010"
+WHERE f.realise_date = EXTRACT(YEAR FROM CAST date) "2010"
 AND m.mpa_name = "G"
 AND g.genre_name = "Триллер";
 ```
@@ -191,7 +182,7 @@ COUNT(l.user_id) AS count_likes
 FROM films AS f
 INNER JOIN mpa AS m ON m.mpa_id = f.mpa_id
 INNER JOIN likes AS l ON l.film_id = f.film_id
-WHERE f.realiseDate = EXTRACT(YEAR FROM CAST date) "2010"
+WHERE f.realise_date = EXTRACT(YEAR FROM CAST date) "2010"
 AND m.mpa_name = "RG-13"
 ORDER BY count_likes DESC;
 ```
