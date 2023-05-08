@@ -2,7 +2,7 @@
 
 Template repository for Filmorate project.
 
-![Диаграмма базы данных проекта Filmorate](src/main/resources/diagramm filmorate.png)
+![Диаграмма базы данных проекта Filmorate](src/main/resources/diagramm.png)
 
 **Описание диаграммы базы данных проекта Filmorate:**
 
