@@ -1,7 +1,8 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -14,10 +15,14 @@ import java.util.Collection;
 @Validated
 @RestController
 @RequestMapping("/films")
-@RequiredArgsConstructor
 public class FilmController {
 
     private final FilmService filmService;
+
+    @Autowired
+    public FilmController(@Qualifier(value = "FilmDbService") FilmService filmService) {
+        this.filmService = filmService;
+    }
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
@@ -31,16 +36,16 @@ public class FilmController {
         return filmService.updateFilm(film);
     }
 
-    @DeleteMapping
-    public Film deleteFilm(@Valid @RequestBody Film film) {
-        log.info("Получен DELETE {} запрос /films ", film);
-        return filmService.deleteFilm(film);
+    @PutMapping("/{id}/like/{userId}")
+    public Collection<Long> addLike(@PathVariable("id") long filmId, @PathVariable long userId) {
+        log.info("Получен PUT {} запрос: /{id}/like/{userId} ", userId);
+        return filmService.addLike(filmId, userId);
     }
 
-    @PutMapping("/{id}/like/{userId}")
-    public void addLike(@PathVariable("id") long filmId, @PathVariable long userId) {
-        log.info("Получен PUT {} запрос: /{id}/like/{userId} ", userId);
-        filmService.addLike(filmId, userId);
+    @DeleteMapping("/{id}/like/{userId}")
+    public Collection<Long> removeLike(@PathVariable("id") long filmId, @PathVariable long userId) {
+        log.info("Получен DELETE {} запрос: /{id}/like/{userId} ", userId);
+        return filmService.deleteLike(filmId, userId);
     }
 
     @GetMapping
@@ -56,14 +61,8 @@ public class FilmController {
     }
 
     @GetMapping("/{id}")
-    public Film getOneFilm(@PathVariable Long id) {
+    public Film getOneFilm(@PathVariable long id) {
         log.info("Получен GET {} запрос: /{id} ", id);
         return filmService.getOneFilm(id);
-    }
-
-    @DeleteMapping("/{id}/like/{userId}")
-    public void removeLike(@PathVariable("id") long filmId, @PathVariable long userId) {
-        log.info("Получен DELETE {} запрос: /{id}/like/{userId} ", userId);
-        filmService.deleteLike(filmId, userId);
     }
 }

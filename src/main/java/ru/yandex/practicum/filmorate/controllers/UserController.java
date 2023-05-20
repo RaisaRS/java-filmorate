@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(@Qualifier("UserDbService") UserService userService) {
         this.userService = userService;
     }
 
@@ -44,9 +45,9 @@ public class UserController {
     }
 
     @PutMapping("/{id}/friends/{friendId}") //добавление в друзья
-    public void addFriend(@PathVariable("id") Long userId, @PathVariable Long friendId) {
+    public Collection<Long> addFriend(@PathVariable("id") Long userId, @PathVariable Long friendId) {
         log.info("Получен PUT запрос {} : /{id}/friends/{friendId}. ", friendId);
-        userService.addFriend(userId, friendId);
+        return userService.addFriend(userId, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}") //удаление из друзей
