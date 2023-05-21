@@ -19,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class User {
 
-    private Long id;
+    private long id;
     @NotBlank
     @Email
     private String email;

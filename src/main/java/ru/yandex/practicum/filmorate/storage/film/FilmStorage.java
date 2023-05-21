@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface FilmStorage {
@@ -15,7 +14,7 @@ public interface FilmStorage {
 
     Film getOneFilm(long id);
 
-    Collection<Film> listPopularFilms(int count);
+    List<Film> listPopularFilms(int count);
 
     boolean addGenreToFilm(long filmId, int genreId);
 
@@ -25,5 +24,5 @@ public interface FilmStorage {
 
     void deleteLike(long filmId, long userId);
 
-    Collection<Long> getLikesByFilm(long filmId);
+    List<Long> getLikesByFilm(long filmId);
 }

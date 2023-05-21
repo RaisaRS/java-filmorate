@@ -1,13 +1,13 @@
 package ru.yandex.practicum.filmorate.storage.dao;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface FriendshipDao {
-    Collection<Long> allUsersFriends(Long id);
+    List<Long> allUsersFriends(long id);
 
-    boolean addFriend(Long userId, Long friendId);
+    boolean addFriend(long userId, long friendId);
 
-    boolean deleteFriend(Long userId, Long friendId);
+    boolean deleteFriend(long userId, long friendId);
 
-    boolean updateFriend(Long userId, Long friendId, boolean status);
+    boolean updateFriend(long userId, long friendId, boolean status);
 }

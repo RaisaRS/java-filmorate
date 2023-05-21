@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.storage.dao.FriendshipDao;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -39,18 +40,18 @@ public class UserDbService implements UserService {
         return userStorage.usersList();
     }
 
-    public User getOneUser(Long id) {
+    public User getOneUser(long id) {
         return userStorage.getOneUser(id);
     }
 
     @Override
-    public Collection<User> getAllUserFriends(Long id) {
+    public Collection<User> getAllUserFriends(long id) {
         Collection<Long> ids = friendshipDao.allUsersFriends(id);
         return userStorage.findAllByIds(ids);
     }
 
     @Override
-    public Collection<User> listOfMutualFriends(Long id, Long otherId) { //вывод списка общих друзей
+    public List<User> listOfMutualFriends(long id, long otherId) { //вывод списка общих друзей
         getOneUser(id);
         getOneUser(otherId);
         return friendshipDao.allUsersFriends(id).stream()
@@ -64,7 +65,7 @@ public class UserDbService implements UserService {
     // теперь дружба стала неоднозначная и совсем не прозрачная,
     // как же разобраться какая односторонняяя, а какая двусторонняя?
     @Override
-    public Collection<Long> addFriend(Long userId, Long friendId) {  //добавление в друзья
+    public Collection<Long> addFriend(long userId, long friendId) {  //добавление в друзья
         getOneUser(userId);
         getOneUser(friendId);
         boolean userFriendOne = friendshipDao.allUsersFriends(userId).contains(friendId);
@@ -81,7 +82,7 @@ public class UserDbService implements UserService {
     }
 
     @Override
-    public void deleteFriend(Long userId, Long friendId) {  //удаление из друзей
+    public void deleteFriend(long userId, long friendId) {  //удаление из друзей
         getOneUser(userId);
         getOneUser(friendId);
         boolean isUserFriendOne = friendshipDao.allUsersFriends(userId).contains(friendId);

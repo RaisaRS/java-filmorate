@@ -15,7 +15,6 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -35,21 +34,6 @@ public class FilmDbStorage implements FilmStorage {
     public List<Film> filmsList() {
         String sql = "SELECT f.*, m.mpa_name AS mpa_name FROM films AS f JOIN mpa AS m ON f.mpa_id = m.mpa_id";
         return jdbcTemplate.query(sql, (rs, rowNum) -> rowMapperFilm(rs));
-        /*final Map<Long, Film> filmById = films.stream().collect(Collectors.toMap(Film::getId, identity()));
-        String inSql = String.join(",", Collections.nCopies(films.size(), "?"));
-        final String sqlQuery = "select * from genre AS g, film_genre fg where fg.genre_id = g.genre_id" +
-                " AND fg.film_id in " +
-                "(" + inSql + ")";
-        jdbcTemplate.query(sqlQuery, (rs) -> {
-            final Film film = filmById.get(rs.getLong("film_id"));
-            film.addGenre(makeGenre(rs));
-        }, films.stream().map(Film::getId).toArray());
-        final String sqlLikes = "SELECT * FROM Likes";
-        jdbcTemplate.query(sqlLikes, (rs) -> {
-            final Film film = filmById.get(rs.getLong("film_id"));
-            film.addLike(rs.getLong("user_id"));
-        });
-        return films;*/
     }
 
     @Override
@@ -63,19 +47,7 @@ public class FilmDbStorage implements FilmStorage {
         film.getGenres().forEach(genre -> addGenreToFilm(id, genre.getId()));
         log.info("Фильм {} сохранен", film.getName());
         return film;
-
     }
-
-   /* public User addUser(User user) {
-        isValidNameUser(user);
-        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("USERS")
-                .usingGeneratedKeyColumns("USER_ID");
-        user.setId(simpleJdbcInsert.executeAndReturnKey(user.userValues()).longValue());
-        log.debug("Пользователь {} добавлен: ", objectMapper.writeValueAsString(user));
-        return user;
-    }*/
-
 
     @Override
     public Film updateFilm(Film film) {
@@ -108,7 +80,7 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public Collection<Film> listPopularFilms(int count) {
+    public List<Film> listPopularFilms(int count) {
         String sql = "SELECT f.*, m.mpa_name " +
                 "FROM films AS f " +
                 "JOIN mpa AS m ON f.mpa_id = m.mpa_id " +
@@ -138,7 +110,7 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public Collection<Long> getLikesByFilm(long filmId) {
+    public List<Long> getLikesByFilm(long filmId) {
         String sql = "SELECT user_id FROM Likes WHERE film_id = ?";
         try {
             return jdbcTemplate.query(sql, (rs, rowNun) -> rs.getLong("user_id"), filmId);

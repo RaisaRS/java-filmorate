@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.dao.MpaDao;
 
-import java.util.Collection;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -15,7 +15,7 @@ public class MpaDbService implements MpaService {
     private final MpaDao mpaDao;
 
     @Override
-    public Collection<Mpa> mpaList() {
+    public List<Mpa> mpaList() {
         return mpaDao.mpaList();
     }
 

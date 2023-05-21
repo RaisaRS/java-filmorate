@@ -9,7 +9,7 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -21,7 +21,7 @@ public class MpaDaoImpl implements MpaDao {
     }
 
     @Override
-    public Collection<Mpa> mpaList() {
+    public List<Mpa> mpaList() {
         String sql = "SELECT * FROM mpa";
         return jdbcTemplate.query(sql, (rs, rowNum) -> rowMapperMpa(rs));
     }
