@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,7 +164,7 @@ class FilmDbStorageTest {
     }
 
     @Test
-    void shouldAddLikeToFilm() {
+    void shouldAddLikeToFilm() throws JsonProcessingException {
         Film filmTest = createFirstFilm();
         filmStorage.addFilm(filmTest);
         User user = createFirstUser();
@@ -176,7 +177,7 @@ class FilmDbStorageTest {
     }
 
     @Test
-    void shouldDeleteLikesFromFilm() {
+    void shouldDeleteLikesFromFilm() throws JsonProcessingException {
         Film filmTest = createFirstFilm();
         filmStorage.addFilm(filmTest);
         User user = createFirstUser();
@@ -229,7 +230,6 @@ class FilmDbStorageTest {
                 .build();
         List<Genre> genres = testFilm.getGenres();
         genres.add(genreDao.getOneGenre(1));
-        //testFilm.getGenres().forEach(genre -> filmStorage.addGenreToFilm(1, genre.getId()));
         return testFilm;
     }
 

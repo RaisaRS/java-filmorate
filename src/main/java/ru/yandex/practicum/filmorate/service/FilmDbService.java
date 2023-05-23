@@ -12,7 +12,6 @@ import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,8 +24,6 @@ public class FilmDbService implements FilmService {
     private final UserService userService;
     private final GenreDao genreDao;
     private static final LocalDate MIN_DAY_RELEASE = LocalDate.of(1895, DECEMBER, 28);
-    private final Comparator<Film> sortingComparator = (f1, f2) -> f2.getLikes().size()
-            - f1.getLikes().size();
 
     @Autowired
     public FilmDbService(@Qualifier(value = "FilmDbStorage") FilmStorage filmStorage, UserService userService, GenreDao genreDao) {
@@ -38,17 +35,20 @@ public class FilmDbService implements FilmService {
     @Override
     public Film createFilm(Film film) {
         validateFim(film);
+        log.info("Фильм {} добавлен. ", film.getName());
         return filmStorage.addFilm(film);
     }
 
     @Override
     public Film updateFilm(Film film) {
         validateFim(film);
+        log.info("Фильм {} обновлен. ", film.getName());
         return filmStorage.updateFilm(film);
     }
 
     @Override
     public List<Film> filmList() {
+        log.info("Получен список фильмов");
         return filmStorage.filmsList().stream()
                 .peek(film -> genreDao.getAllGenresByFilm(film.getId())
                         .forEach(film::addGenre))
@@ -59,6 +59,7 @@ public class FilmDbService implements FilmService {
     public Film getOneFilm(long id) {
         Film film = filmStorage.getOneFilm(id);
         genreDao.getAllGenresByFilm(film.getId()).forEach(film::addGenre);
+        log.info("Фильм {} получен. ", film.getName());
         return film;
     }
 
@@ -67,6 +68,7 @@ public class FilmDbService implements FilmService {
         getOneFilm(filmId);
         userService.getOneUser(userId);
         filmStorage.addLike(filmId, userId);
+        log.info("Лайк от пользователя с id {} к фильму c id {} добавлен. ", userId, filmId);
         return filmStorage.getLikesByFilm(filmId);
     }
 
@@ -75,12 +77,14 @@ public class FilmDbService implements FilmService {
         getOneFilm(filmId);
         userService.getOneUser(userId);
         filmStorage.deleteLike(filmId, userId);
+        log.info("Лайк от пользователя с id {} к фильму c id {} удалён. ", userId, filmId);
         return filmStorage.getLikesByFilm(filmId);
     }
 
     @Override
     @SneakyThrows
     public Collection<Film> listPopularFilms(int count) {   //вывод популярных по количеству лайков фильмов
+        log.info("Вывод самых популярных фильмов по количеству лайков в размере count {} ", count);
         return filmStorage.listPopularFilms(count).stream()
                 .peek(film -> genreDao.getAllGenresByFilm(film.getId())
                         .forEach(film::createGenre))

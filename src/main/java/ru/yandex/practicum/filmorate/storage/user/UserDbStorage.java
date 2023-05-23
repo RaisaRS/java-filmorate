@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +30,8 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    @SneakyThrows
-    public User addUser(User user) {
+
+    public User addUser(User user) throws JsonProcessingException {
         isValidNameUser(user);
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("USERS")
@@ -41,8 +42,8 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    @SneakyThrows
-    public User deleteUser(User user) {
+
+    public User deleteUser(User user) throws JsonProcessingException {
         String sql = "DELETE FROM users WHERE user_id = ?";
         if (jdbcTemplate.update(sql, user.getEmail(), user.getLogin(), user.getName(),
                 user.getBirthday(), user.getId()) > 0) {

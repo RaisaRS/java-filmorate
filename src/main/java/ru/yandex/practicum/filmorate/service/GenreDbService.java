@@ -16,11 +16,13 @@ public class GenreDbService implements GenreService {
 
     @Override
     public Collection<Genre> genreList() {
+        log.info("Выведены все жанры");
         return genreDao.getAllGenres();
     }
 
     @Override
     public Genre getOneGenre(int id) {
+        log.info("Получен жанр с id {} ", id);
         return genreDao.getOneGenre(id);
     }
 }

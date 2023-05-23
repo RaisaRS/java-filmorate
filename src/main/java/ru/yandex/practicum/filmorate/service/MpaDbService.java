@@ -16,11 +16,13 @@ public class MpaDbService implements MpaService {
 
     @Override
     public List<Mpa> mpaList() {
+        log.info("Выведены все рейтинги");
         return mpaDao.mpaList();
     }
 
     @Override
     public Mpa getOneMpa(int id) {
+        log.info("Получен рейтинг с id {} ", id);
         return mpaDao.getOneMpa(id);
     }
 }

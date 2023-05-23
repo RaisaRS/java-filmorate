@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ class FriendshipDaoTest {
     private final UserService userService;
 
     @Test
-    void shouldAddFriend() {
+    void shouldAddFriend() throws JsonProcessingException {
         User user1 = createTestUser();
         User user2 = createSecondUser();
         userStorage.addUser(user1);
@@ -43,7 +44,7 @@ class FriendshipDaoTest {
     }
 
     @Test
-    void shouldDeleteFriend() {
+    void shouldDeleteFriend() throws JsonProcessingException {
         User user1 = createTestUser();
         User user2 = createSecondUser();
         userStorage.addUser(user1);
@@ -57,7 +58,7 @@ class FriendshipDaoTest {
     }
 
     @Test
-    void shouldGetCommonFriends() {
+    void shouldGetCommonFriends() throws JsonProcessingException {
         User user1 = createTestUser();
         User user2 = createSecondUser();
         User user3 = createThirdUser();

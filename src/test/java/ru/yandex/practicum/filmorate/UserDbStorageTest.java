@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ class UserDbStorageTest {
     private final UserStorage userStorage;
 
     @Test
-    void shouldCreateUserWithId() {
+    void shouldCreateUserWithId() throws JsonProcessingException {
         User userForTest = createTesstUser();
         userStorage.addUser(userForTest);
         Optional<User> userOptional = Optional.ofNullable(userStorage.getOneUser(1L));
@@ -37,7 +38,7 @@ class UserDbStorageTest {
     }
 
     @Test
-    void shouldCreateUserWithEmail() {
+    void shouldCreateUserWithEmail() throws JsonProcessingException {
         User userForTest = createTesstUser();
         userStorage.addUser(userForTest);
         Optional<User> userOptional = Optional.ofNullable(userStorage.getOneUser(1));
@@ -49,7 +50,7 @@ class UserDbStorageTest {
     }
 
     @Test
-    void shouldCreateUserWithLogin() {
+    void shouldCreateUserWithLogin() throws JsonProcessingException {
         User userForTest = createTesstUser();
         userStorage.addUser(userForTest);
         Optional<User> userOptional = Optional.ofNullable(userStorage.getOneUser(1));
@@ -61,7 +62,7 @@ class UserDbStorageTest {
     }
 
     @Test
-    void shouldCreateUserWithName() {
+    void shouldCreateUserWithName() throws JsonProcessingException {
         User userForTest = createTesstUser();
         userStorage.addUser(userForTest);
         Optional<User> userOptional = Optional.ofNullable(userStorage.getOneUser(1));
@@ -73,7 +74,7 @@ class UserDbStorageTest {
     }
 
     @Test
-    void shouldCreateUserWithBirthday() {
+    void shouldCreateUserWithBirthday() throws JsonProcessingException {
         User userForTest = createTesstUser();
         userStorage.addUser(userForTest);
         Optional<User> userOptional = Optional.ofNullable(userStorage.getOneUser(1));
@@ -86,7 +87,7 @@ class UserDbStorageTest {
     }
 
     @Test
-    void shouldUpdateUserWithId() {
+    void shouldUpdateUserWithId() throws JsonProcessingException {
         User userForTest = createTesstUser();
         userStorage.addUser(userForTest);
         User forUpdate = updateUserTest();
@@ -100,7 +101,7 @@ class UserDbStorageTest {
     }
 
     @Test
-    void shouldUpdateUserWithEmail() {
+    void shouldUpdateUserWithEmail() throws JsonProcessingException {
         User userForTest = createTesstUser();
         userStorage.addUser(userForTest);
         User forUpdate = updateUserTest();
@@ -114,7 +115,7 @@ class UserDbStorageTest {
     }
 
     @Test
-    void shouldUpdatedUserByLogin() {
+    void shouldUpdatedUserByLogin() throws JsonProcessingException {
         User userForTest = createTesstUser();
         userStorage.addUser(userForTest);
         User forUpdate = updateUserTest();
@@ -128,7 +129,7 @@ class UserDbStorageTest {
     }
 
     @Test
-    void shouldUpdateUserWithName() {
+    void shouldUpdateUserWithName() throws JsonProcessingException {
         User userForTest = createTesstUser();
         userStorage.addUser(userForTest);
         User forUpdate = updateUserTest();
@@ -142,7 +143,7 @@ class UserDbStorageTest {
     }
 
     @Test
-    void shouldUpdateUserWithBirthday() {
+    void shouldUpdateUserWithBirthday() throws JsonProcessingException {
         User userForTest = createTesstUser();
         userStorage.addUser(userForTest);
         User forUpdate = updateUserTest();
@@ -157,7 +158,7 @@ class UserDbStorageTest {
     }
 
     @Test
-    void shouldGetAllUsers() {
+    void shouldGetAllUsers() throws JsonProcessingException {
         User user = createTesstUser();
         User user1 = updateUserTest();
         user1.setId(2);
@@ -174,21 +175,10 @@ class UserDbStorageTest {
                 .birthday(LocalDate.of(1984, 3, 22)).build();
     }
 
-    /*private User createTestUser() {
-        return User.builder().id(1).name("name").login("UpdatedLogin").email("email@mail.ru")
-                .birthday(LocalDate.of(1984, 3, 22)).build();
-    }*/
-
     private User updateUserTest() {
         return User.builder().id(1L).email("updated@mail.ru").login("updatedLogin").name("updatedLogin")
                 .birthday(LocalDate.of(2000, 7, 15)).build();
     }
-
-    /*private User userForUpdate() {
-        return User.builder().id(1).name("UpdateName").login("UpdatedLogin").login("UpdatedLogin")
-                .email("updated@mail.ru")
-                .birthday(LocalDate.of(2000, 7, 15)).build();
-    }*/
 }
 
 

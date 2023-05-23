@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,7 +29,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@RequestBody @Valid User user) { //добавление пользователя
+    public User addUser(@RequestBody @Valid User user) throws JsonProcessingException { //добавление пользователя
         log.info("POST request received: {} /users ", user);
         return userService.addUser(user);
     }

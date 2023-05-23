@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,26 +28,31 @@ public class UserDbService implements UserService {
         this.friendshipDao = friendshipDao;
     }
 
-    public User addUser(User user) {
+    public User addUser(User user) throws JsonProcessingException {
+        log.info("Пользователь {} добавлен. ", user.getName());
         return userStorage.addUser(user);
     }
 
     public User updateUser(User user) {
+        log.info("Пользователь {} обновлен. ", user.getName());
         return userStorage.updateUser(user);
     }
 
     @Override
     public Collection<User> usersList() {
+        log.info("Получен список пользователей");
         return userStorage.usersList();
     }
 
     public User getOneUser(long id) {
+        log.info("Пользователь {} получен. ", id);
         return userStorage.getOneUser(id);
     }
 
     @Override
     public Collection<User> getAllUserFriends(long id) {
         Collection<Long> ids = friendshipDao.allUsersFriends(id);
+        log.info("Получен список id  друзей пользователя {} ", id);
         return userStorage.findAllByIds(ids);
     }
 
@@ -54,16 +60,13 @@ public class UserDbService implements UserService {
     public List<User> listOfMutualFriends(long id, long otherId) { //вывод списка общих друзей
         getOneUser(id);
         getOneUser(otherId);
+        log.info("Получен список общих друзей пользователей с id {} и id {} ", id, otherId);
         return friendshipDao.allUsersFriends(id).stream()
                 .filter(friendshipDao.allUsersFriends(otherId)::contains)
                 .map(this::getOneUser)
                 .collect(Collectors.toList());
     }
 
-    //Пока пользователям не надо одобрять заявки в друзья — добавляем сразу.
-    // То есть если Лена стала другом Саши, то это значит, что Саша теперь друг Лены.
-    // теперь дружба стала неоднозначная и совсем не прозрачная,
-    // как же разобраться какая односторонняяя, а какая двусторонняя?
     @Override
     public Collection<Long> addFriend(long userId, long friendId) {  //добавление в друзья
         getOneUser(userId);
@@ -78,6 +81,7 @@ public class UserDbService implements UserService {
             log.debug("Пользовтель {} уже отправил заявку в друзья пользователю {}." +
                     " Дружба неопределённая. ", userId, friendId);
         }
+        log.info("Пользователю с id {}  добавлен друг с id {} ", userId, friendId);
         return friendshipDao.allUsersFriends(userId);
     }
 
