@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.yandex.practicum.filmorate.model.Mpa;
-import ru.yandex.practicum.filmorate.storage.dao.MpaDao;
+import ru.yandex.practicum.filmorate.storage.mpa.MpaStorage;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,20 +19,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class MpaDaoTest {
+class MpaStorageTest {
 
-    private final MpaDao mpaDao;
+    private final MpaStorage mpaStorage;
 
     @Test
     void shouldGetAllMpa() {
-        List<Mpa> allMpa = mpaDao.mpaList();
+        List<Mpa> allMpa = mpaStorage.mpaList();
 
         assertEquals(5, allMpa.size(), "Список Mpa не соответствует ожидаемому");
     }
 
     @Test
     void shouldGetMpaById() {
-        Optional<Mpa> mpaOptional = Optional.ofNullable(mpaDao.getOneMpa(1));
+        Optional<Mpa> mpaOptional = Optional.ofNullable(mpaStorage.getOneMpa(1));
 
         assertThat(mpaOptional)
                 .isPresent()

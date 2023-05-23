@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Mpa;
-import ru.yandex.practicum.filmorate.storage.dao.MpaDao;
+import ru.yandex.practicum.filmorate.storage.mpa.MpaStorage;
 
 import java.util.List;
 
@@ -12,17 +12,17 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class MpaDbService implements MpaService {
-    private final MpaDao mpaDao;
+    private final MpaStorage mpaStorage;
 
     @Override
     public List<Mpa> mpaList() {
         log.info("Выведены все рейтинги");
-        return mpaDao.mpaList();
+        return mpaStorage.mpaList();
     }
 
     @Override
     public Mpa getOneMpa(int id) {
         log.info("Получен рейтинг с id {} ", id);
-        return mpaDao.getOneMpa(id);
+        return mpaStorage.getOneMpa(id);
     }
 }

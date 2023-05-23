@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.storage.dao.GenreDao;
+import ru.yandex.practicum.filmorate.storage.genre.GenreStorage;
 
 import java.util.Collection;
 
@@ -12,17 +12,17 @@ import java.util.Collection;
 @Slf4j
 @RequiredArgsConstructor
 public class GenreDbService implements GenreService {
-    private final GenreDao genreDao;
+    private final GenreStorage genreStorage;
 
     @Override
     public Collection<Genre> genreList() {
         log.info("Выведены все жанры");
-        return genreDao.getAllGenres();
+        return genreStorage.getAllGenres();
     }
 
     @Override
     public Genre getOneGenre(int id) {
         log.info("Получен жанр с id {} ", id);
-        return genreDao.getOneGenre(id);
+        return genreStorage.getOneGenre(id);
     }
 }

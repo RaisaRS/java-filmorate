@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.storage.dao.GenreDao;
+import ru.yandex.practicum.filmorate.storage.genre.GenreStorage;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,20 +19,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class GenreDaoTest {
+class GenreStorageTest {
 
-    private final GenreDao genreDao;
+    private final GenreStorage genreStorage;
 
     @Test
     void shouldGetAllGenres() {
-        List<Genre> genres = genreDao.getAllGenres();
+        List<Genre> genres = genreStorage.getAllGenres();
 
         assertEquals(6, genres.size(), "Список Genre не соответствует ожидаемому");
     }
 
     @Test
     void shouldGetGenreById() {
-        Optional<Genre> genreOptional = Optional.ofNullable(genreDao.getOneGenre(1));
+        Optional<Genre> genreOptional = Optional.ofNullable(genreStorage.getOneGenre(1));
 
         assertThat(genreOptional)
                 .isPresent()

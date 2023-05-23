@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.dao;
+package ru.yandex.practicum.filmorate.storage.friendship;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class FriendshipDaoImpl implements FriendshipDao {
+public class FriendshipStorageImpl implements FriendshipStorage {
     private final JdbcTemplate jdbcTemplate;
 
-    public FriendshipDaoImpl(JdbcTemplate jdbcTemplate) {
+    public FriendshipStorageImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

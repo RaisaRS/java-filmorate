@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.dao.FriendshipDao;
+import ru.yandex.practicum.filmorate.storage.friendship.FriendshipStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class FriendshipDaoTest {
 
-    private final FriendshipDao friendshipDao;
+    private final FriendshipStorage friendshipStorage;
     private final UserStorage userStorage;
     private final UserService userService;
 
@@ -34,10 +34,10 @@ class FriendshipDaoTest {
         User user2 = createSecondUser();
         userStorage.addUser(user1);
         userStorage.addUser(user2);
-        friendshipDao.addFriend(1, 2);
+        friendshipStorage.addFriend(1, 2);
 
-        Collection<User> friendsOfUser1 = userStorage.findAllByIds(friendshipDao.allUsersFriends(1));
-        Collection<User> friendsOfUser2 = userStorage.findAllByIds(friendshipDao.allUsersFriends(2));
+        Collection<User> friendsOfUser1 = userStorage.findAllByIds(friendshipStorage.allUsersFriends(1));
+        Collection<User> friendsOfUser2 = userStorage.findAllByIds(friendshipStorage.allUsersFriends(2));
 
         assertEquals(1, friendsOfUser1.size(), "Списки друзей не совпадают");
         assertEquals(0, friendsOfUser2.size(), "Списки друзей не совпадают");
@@ -49,10 +49,10 @@ class FriendshipDaoTest {
         User user2 = createSecondUser();
         userStorage.addUser(user1);
         userStorage.addUser(user2);
-        friendshipDao.addFriend(1, 2);
-        friendshipDao.deleteFriend(1, 2);
+        friendshipStorage.addFriend(1, 2);
+        friendshipStorage.deleteFriend(1, 2);
 
-        Collection<Long> friendsOfUser1 = friendshipDao.allUsersFriends(1);
+        Collection<Long> friendsOfUser1 = friendshipStorage.allUsersFriends(1);
 
         assertEquals(0, friendsOfUser1.size(), "Списки друзей не совпадают");
     }
@@ -65,8 +65,8 @@ class FriendshipDaoTest {
         userStorage.addUser(user1);
         userStorage.addUser(user2);
         userStorage.addUser(user3);
-        friendshipDao.addFriend(1, 3);
-        friendshipDao.addFriend(2, 3);
+        friendshipStorage.addFriend(1, 3);
+        friendshipStorage.addFriend(2, 3);
 
         List<User> commonFriends = userService.listOfMutualFriends(1, 2);
 

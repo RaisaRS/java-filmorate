@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.dao;
+package ru.yandex.practicum.filmorate.storage.genre;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,10 +13,10 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class GenreDaoImpl implements GenreDao {
+public class GenreStorageImpl implements GenreStorage {
     private final JdbcTemplate jdbcTemplate;
 
-    public GenreDaoImpl(JdbcTemplate jdbcTemplate) {
+    public GenreStorageImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

@@ -1,8 +1,8 @@
-package ru.yandex.practicum.filmorate.storage.dao;
+package ru.yandex.practicum.filmorate.storage.friendship;
 
 import java.util.List;
 
-public interface FriendshipDao {
+public interface FriendshipStorage {
     List<Long> allUsersFriends(long id);
 
     boolean addFriend(long userId, long friendId);

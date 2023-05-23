@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.dao;
+package ru.yandex.practicum.filmorate.storage.mpa;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,10 +13,10 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class MpaDaoImpl implements MpaDao {
+public class MpaStorageImpl implements MpaStorage {
     private final JdbcTemplate jdbcTemplate;
 
-    public MpaDaoImpl(JdbcTemplate jdbcTemplate) {
+    public MpaStorageImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

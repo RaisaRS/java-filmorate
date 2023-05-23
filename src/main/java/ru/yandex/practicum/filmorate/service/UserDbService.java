@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.dao.FriendshipDao;
+import ru.yandex.practicum.filmorate.storage.friendship.FriendshipStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.Collection;
@@ -20,12 +20,12 @@ import static java.lang.String.format;
 @Slf4j
 public class UserDbService implements UserService {
     private final UserStorage userStorage;
-    private final FriendshipDao friendshipDao;
+    private final FriendshipStorage friendshipStorage;
 
     @Autowired
-    public UserDbService(UserStorage userStorage, FriendshipDao friendshipDao) {
+    public UserDbService(UserStorage userStorage, FriendshipStorage friendshipStorage) {
         this.userStorage = userStorage;
-        this.friendshipDao = friendshipDao;
+        this.friendshipStorage = friendshipStorage;
     }
 
     public User addUser(User user) throws JsonProcessingException {
@@ -51,7 +51,7 @@ public class UserDbService implements UserService {
 
     @Override
     public Collection<User> getAllUserFriends(long id) {
-        Collection<Long> ids = friendshipDao.allUsersFriends(id);
+        Collection<Long> ids = friendshipStorage.allUsersFriends(id);
         log.info("Получен список id  друзей пользователя {} ", id);
         return userStorage.findAllByIds(ids);
     }
@@ -61,8 +61,8 @@ public class UserDbService implements UserService {
         getOneUser(id);
         getOneUser(otherId);
         log.info("Получен список общих друзей пользователей с id {} и id {} ", id, otherId);
-        return friendshipDao.allUsersFriends(id).stream()
-                .filter(friendshipDao.allUsersFriends(otherId)::contains)
+        return friendshipStorage.allUsersFriends(id).stream()
+                .filter(friendshipStorage.allUsersFriends(otherId)::contains)
                 .map(this::getOneUser)
                 .collect(Collectors.toList());
     }
@@ -71,35 +71,35 @@ public class UserDbService implements UserService {
     public Collection<Long> addFriend(long userId, long friendId) {  //добавление в друзья
         getOneUser(userId);
         getOneUser(friendId);
-        boolean userFriendOne = friendshipDao.allUsersFriends(userId).contains(friendId);
-        boolean userFriendTwo = friendshipDao.allUsersFriends(friendId).contains(userId);
+        boolean userFriendOne = friendshipStorage.allUsersFriends(userId).contains(friendId);
+        boolean userFriendTwo = friendshipStorage.allUsersFriends(friendId).contains(userId);
         if (!userFriendOne && !userFriendTwo) {
-            friendshipDao.addFriend(userId, friendId);
+            friendshipStorage.addFriend(userId, friendId);
         } else if (userFriendOne && userFriendTwo) {
-            friendshipDao.updateFriend(userId, friendId, true);
+            friendshipStorage.updateFriend(userId, friendId, true);
         } else {
             log.debug("Пользовтель {} уже отправил заявку в друзья пользователю {}." +
                     " Дружба неопределённая. ", userId, friendId);
         }
         log.info("Пользователю с id {}  добавлен друг с id {} ", userId, friendId);
-        return friendshipDao.allUsersFriends(userId);
+        return friendshipStorage.allUsersFriends(userId);
     }
 
     @Override
     public void deleteFriend(long userId, long friendId) {  //удаление из друзей
         getOneUser(userId);
         getOneUser(friendId);
-        boolean isUserFriendOne = friendshipDao.allUsersFriends(userId).contains(friendId);
-        boolean isUserFriendTwo = friendshipDao.allUsersFriends(friendId).contains(userId);
+        boolean isUserFriendOne = friendshipStorage.allUsersFriends(userId).contains(friendId);
+        boolean isUserFriendTwo = friendshipStorage.allUsersFriends(friendId).contains(userId);
         if (!isUserFriendOne) {
             log.info("Пользовтель {} никогда не был другом пользователя {}. ", userId, friendId);
             throw new UserNotFoundException("Пользователи никогда не были друзьями" + userId + "," + friendId);
         } else if (!isUserFriendTwo) {
-            friendshipDao.deleteFriend(userId, friendId);
+            friendshipStorage.deleteFriend(userId, friendId);
         } else {
-            if (!friendshipDao.updateFriend(userId, friendId, false)) {
-                friendshipDao.deleteFriend(friendId, userId);
-                friendshipDao.deleteFriend(userId, friendId);
+            if (!friendshipStorage.updateFriend(userId, friendId, false)) {
+                friendshipStorage.deleteFriend(friendId, userId);
+                friendshipStorage.deleteFriend(userId, friendId);
             }
         }
     }

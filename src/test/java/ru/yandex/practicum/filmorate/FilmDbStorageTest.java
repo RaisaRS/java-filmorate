@@ -11,9 +11,9 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.dao.GenreDao;
-import ru.yandex.practicum.filmorate.storage.dao.MpaDao;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.genre.GenreStorage;
+import ru.yandex.practicum.filmorate.storage.mpa.MpaStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
@@ -32,8 +32,8 @@ class FilmDbStorageTest {
 
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
-    private final GenreDao genreDao;
-    private final MpaDao mpaDao;
+    private final GenreStorage genreStorage;
+    private final MpaStorage mpaStorage;
 
     @Test
     void shouldCreateFilmWithName() {
@@ -208,20 +208,20 @@ class FilmDbStorageTest {
     }
 
     private Film createFirstFilm() {
-        Mpa mpa = mpaDao.getOneMpa(1);
+        Mpa mpa = mpaStorage.getOneMpa(1);
         return Film.builder().id(1).name("FirstName").description("description")
                 .releaseDate(LocalDate.of(2020, 10, 10)).duration(180)
                 .mpa(mpa).build();
     }
 
     private Film createSecondFilm() {
-        Mpa mpa = mpaDao.getOneMpa(2);
+        Mpa mpa = mpaStorage.getOneMpa(2);
         return Film.builder().id(1).name("SecondName").description("AfterUpdate")
                 .releaseDate(LocalDate.of(2023, 5, 1)).duration(130).mpa(mpa).build();
     }
 
     private Film createTestFilm() {
-        Mpa mpa = mpaDao.getOneMpa(1);
+        Mpa mpa = mpaStorage.getOneMpa(1);
         Film testFilm = Film.builder()
                 .id(1).name("TestName")
                 .description("description")
@@ -229,16 +229,16 @@ class FilmDbStorageTest {
                 .mpa(mpa)
                 .build();
         List<Genre> genres = testFilm.getGenres();
-        genres.add(genreDao.getOneGenre(1));
+        genres.add(genreStorage.getOneGenre(1));
         return testFilm;
     }
 
     private Film createFilmForUpdate() {
-        Mpa mpa = mpaDao.getOneMpa(2);
+        Mpa mpa = mpaStorage.getOneMpa(2);
         Film filmForUpdate = Film.builder().id(1).name("AfterUpdateName").description("afterUpdateDescription")
                 .releaseDate(LocalDate.of(2023, 5, 1)).duration(130).mpa(mpa).build();
         List<Genre> testGenres = filmForUpdate.getGenres();
-        testGenres.add(genreDao.getOneGenre(2));
+        testGenres.add(genreStorage.getOneGenre(2));
         return filmForUpdate;
     }
 }

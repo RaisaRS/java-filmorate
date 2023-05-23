@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.dao.GenreDao;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.genre.GenreStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -22,14 +22,14 @@ import static java.util.Calendar.DECEMBER;
 public class FilmDbService implements FilmService {
     private final FilmStorage filmStorage;
     private final UserService userService;
-    private final GenreDao genreDao;
+    private final GenreStorage genreStorage;
     private static final LocalDate MIN_DAY_RELEASE = LocalDate.of(1895, DECEMBER, 28);
 
     @Autowired
-    public FilmDbService(@Qualifier(value = "FilmDbStorage") FilmStorage filmStorage, UserService userService, GenreDao genreDao) {
+    public FilmDbService(@Qualifier(value = "FilmDbStorage") FilmStorage filmStorage, UserService userService, GenreStorage genreStorage) {
         this.filmStorage = filmStorage;
         this.userService = userService;
-        this.genreDao = genreDao;
+        this.genreStorage = genreStorage;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class FilmDbService implements FilmService {
     public List<Film> filmList() {
         log.info("Получен список фильмов");
         return filmStorage.filmsList().stream()
-                .peek(film -> genreDao.getAllGenresByFilm(film.getId())
+                .peek(film -> genreStorage.getAllGenresByFilm(film.getId())
                         .forEach(film::addGenre))
                 .collect(Collectors.toList());
     }
@@ -58,7 +58,7 @@ public class FilmDbService implements FilmService {
     @Override
     public Film getOneFilm(long id) {
         Film film = filmStorage.getOneFilm(id);
-        genreDao.getAllGenresByFilm(film.getId()).forEach(film::addGenre);
+        genreStorage.getAllGenresByFilm(film.getId()).forEach(film::addGenre);
         log.info("Фильм {} получен. ", film.getName());
         return film;
     }
@@ -86,7 +86,7 @@ public class FilmDbService implements FilmService {
     public Collection<Film> listPopularFilms(int count) {   //вывод популярных по количеству лайков фильмов
         log.info("Вывод самых популярных фильмов по количеству лайков в размере count {} ", count);
         return filmStorage.listPopularFilms(count).stream()
-                .peek(film -> genreDao.getAllGenresByFilm(film.getId())
+                .peek(film -> genreStorage.getAllGenresByFilm(film.getId())
                         .forEach(film::createGenre))
                 .collect(Collectors.toList());
     }
