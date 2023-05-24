@@ -1,29 +1,22 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
-import java.util.Map;
 
 public interface UserStorage {
-    Map<Long, User> allUsers();
 
-    User addUser(User user);
+    User addUser(User user) throws JsonProcessingException;
 
-    User deleteUser(User user);
+    User deleteUser(User user) throws JsonProcessingException;
 
     User updateUser(User user);
 
     Collection<User> usersList();
 
-    User getOneUser(Long id);
+    User getOneUser(long id);
 
-    Collection<User> getAllUserFriends(Long id);
-
-    void addFriend(Long userId, Long otherId);
-
-    void deleteFriend(Long userId, Long otherId);
-
-    Collection<User> listOfMutualFriends(Long id, Long otherId);
+    Collection<User> findAllByIds(Collection<Long> ids);
 }
 

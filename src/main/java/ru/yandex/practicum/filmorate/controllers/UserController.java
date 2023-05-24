@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,7 @@ import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 
 @Validated
 @RestController
@@ -20,13 +23,13 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(@Qualifier("UserDbService") UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@RequestBody @Valid User user) { //добавление пользователя
+    public User addUser(@RequestBody @Valid User user) throws JsonProcessingException { //добавление пользователя
         log.info("POST request received: {} /users ", user);
         return userService.addUser(user);
     }
@@ -44,32 +47,33 @@ public class UserController {
     }
 
     @PutMapping("/{id}/friends/{friendId}") //добавление в друзья
-    public void addFriend(@PathVariable("id") Long userId, @PathVariable Long friendId) {
+    public Collection<Long> addFriend(@PathVariable("id") long userId, @PathVariable long friendId) {
         log.info("Получен PUT запрос {} : /{id}/friends/{friendId}. ", friendId);
-        userService.addFriend(userId, friendId);
+        return userService.addFriend(userId, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}") //удаление из друзей
-    public void deleteFriend(@PathVariable("id") Long userId, @PathVariable Long friendId) {
+    public void deleteFriend(@PathVariable("id") long userId, @PathVariable long friendId) {
         log.info("Получен DELETE запрос {}: /{id}/friends/{friendId}. ", friendId);
         userService.deleteFriend(userId, friendId);
     }
 
     @GetMapping("/{id}")  //получение пользователя по идентификатору
-    public User getOneUser(@PathVariable Long id) {
+    public User getOneUser(@PathVariable long id) {
         log.info("Получен GET запрос {} : /{id}. ", id);
         return userService.getOneUser(id);
     }
 
     @GetMapping("/{id}/friends") //вывести список всех друзей одного пользователя
-    public Collection<User> getAllUserFriends(@PathVariable Long id) {
+    public Collection<User> getAllUserFriends(@PathVariable long id) {
         log.info("Получен GET запрос {} : /{id}/friends. ", id);
         return userService.getAllUserFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public Collection<User> listOfMutualFriends(@PathVariable long id, @PathVariable long otherId) {
+    public List<User> listOfMutualFriends(@PathVariable long id, @PathVariable long otherId) {
         log.info("Получен GET запрос {} : /{id}/friends/common/{otherId}. ", otherId);
         return userService.listOfMutualFriends(id, otherId);
+
     }
 }
